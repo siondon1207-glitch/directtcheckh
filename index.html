@@ -1,23 +1,843 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
-    <main>
-      <h1>Home page</h1>
+
+
+    <!-- JSON-LD Structured Data for Naver/Google SEO -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "현대자동차 디올뉴 그랜저 GN7",
+        "image": "https://car-price.reliabledone.com/images/grandeur.jpg",
+        "description": "2026년 기준 현대자동차 디올뉴 그랜저 가격 분석 및 가솔린 2.5, 가솔린 3.5, LPi 3.5, 1.6 하이브리드 라인업의 프리미엄, 익스클루시브, 아너스, 캘리그래피, 블랙잉크 트림별 세부 견적 비교 정보.",
+        "brand": {
+          "@type": "Brand",
+          "name": "현대자동차"
+        },
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "KRW",
+          "lowPrice": "37110000",
+          "highPrice": "65160000",
+          "offerCount": "15"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "3840"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "디올뉴 그랜저 하이브리드 모델과 가솔린 2.5 모델의 실질적인 가격 차이는 얼마인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "기본 트림인 프리미엄 기준으로 가솔린 2.5는 약 3798만 원 선, 1.6 하이브리드는 약 4354만 원 선으로 차량 본체 가격 차이는 대략 556만 원 가량입니다. 하지만 개별소비세 감면 혜택, 공영주차장 및 고속도로 통행료 할인, 그리고 하이브리드 특유의 주유 연비 효율성을 감안하면 연간 1만 5천 킬로미터 이상 주행 시 약 4년 전후로 초기 비용 차이를 극복하고 장기적인 유지 비용 절감 혜택을 누릴 수 있습니다."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "디올뉴 그랜저 캘리그래피와 블랙잉크 트림의 주요 차이점은 무엇인가요?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "캘리그래피 트림은 현대 준대형 플래그십의 정석으로 고품격 나파가죽 시트, 프리미엄 사운드 등 호화로운 편의 사양과 고급 내장재를 풍부하게 품고 있습니다. 반면 블랙잉크 에디션은 캘리그래피의 모든 옵션을 이어받으면서도 외부 엠블럼, 라디에이터 그릴, 알로이 휠 및 모든 내외장 인테리어 몰딩을 차분하고 무게감 있는 단일 무광 및 유광 블랙 톤으로 일체화하여 젊고 세련되며 고유한 독창성을 선사하는 전용 패키지 트림입니다."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+
+    <style>
+        :root {
+            --primary-bg: #f4f6fc;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --accent-blue: #3182ce;
+            --accent-teal: #319795;
+            --accent-indigo: #2b6cb0;
+            --accent-amber: #dd6b20;
+            --border-color: #e2e8f0;
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            line-height: 1.8;
+            background-color: var(--primary-bg);
+            word-break: keep-all;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-teal) 100%);
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+            box-shadow: var(--shadow-medium);
+        }
+
+        header h1 {
+            font-size: 2.6em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        nav {
+            margin-top: 30px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: white;
+            color: var(--accent-indigo);
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 50px 0;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: var(--accent-indigo);
+            font-weight: 700;
+            border-bottom: 3px solid var(--accent-teal);
+            padding-bottom: 12px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: var(--text-main);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-teal);
+            padding-left: 12px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .highlight {
+            color: var(--accent-indigo);
+            font-weight: 700;
+        }
+
+        .highlight-amber {
+            color: var(--accent-amber);
+            font-weight: 700;
+        }
+
+        /* Interactive Calculator Area */
+        .calculator-container {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent-indigo);
+        }
+
+        .form-group select, .form-group input {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: white;
+            color: var(--text-main);
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-indigo);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .calc-result {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .result-item.total {
+            font-size: 1.4em;
+            font-weight: 800;
+            color: var(--accent-amber);
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .btn-calc {
+            background-color: var(--accent-indigo);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn-calc:hover {
+            background-color: #2b6cb0;
+        }
+
+        /* Tables styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--accent-indigo);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Link Block */
+        .links-container {
+            background-color: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .links-container h4 {
+            color: var(--accent-indigo);
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .links-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .links-container li {
+            margin-bottom: 10px;
+        }
+
+        .links-container li:last-child {
+            margin-bottom: 0;
+        }
+
+        .links-container a {
+            color: var(--accent-indigo);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.2s;
+        }
+
+        .links-container a:hover {
+            border-bottom: 1px solid var(--accent-indigo);
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-weight: 700;
+            font-size: 1.15em;
+            color: var(--accent-indigo);
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: var(--text-main);
+            font-size: 1em;
+            line-height: 1.8;
+        }
+
+        /* Inquire Form */
+        .inquire-container {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border: 1px solid #81e6d9;
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .inquire-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .inquire-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .inquire-form .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .inquire-form .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+
+        .inquire-form textarea {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-teal);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #2c7a7b;
+        }
+
+        footer {
+            background-color: #1a202c;
+            color: #a0aec0;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 1px solid #2d3748;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>디올뉴 그랜저 가격 실시간 비교견적 및 세금 유지비 총정리</h1>
+            <p>2026년 최신 현대 디올뉴 그랜저 모델별 등급과 엔진별 가격표를 한눈에 비교하고 최고의 가성비 꿀조합 옵션을 선별해 드립니다.</p>
+            <nav>
+                <ul>
+                    <li><a href="#intro">시장 분석</a></li>
+                    <li><a href="#engine">엔진별 성능</a></li>
+                    <li><a href="#trim">트림 분석</a></li>
+                    <li><a href="#calculator">모의 계산기</a></li>
+                    <li><a href="#options">추천 옵션</a></li>
+                    <li><a href="#faq">자주 묻는 질문</a></li>
+                    <li><a href="#consult">신차 상담</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="intro">
+            <h2>준대형 세단의 왕좌: 현대 디올뉴 그랜저 2026 시장 분석</h2>
+            <div class="card">
+                <p>
+                    현대자동차 브랜드의 대표적인 준대형 세단인 디올뉴 그랜저는 오랜 시간 동안 국산차 판매 순위에서 최상위권을 유지하며 대중의 폭넓은 사랑을 받고 있습니다. 많은 소비자들이 신차를 계약하기 전 네이버 혹은 구글에서 디올뉴 그랜저 가격표나 예상 취득 비용을 검색해 보거나 유튜브, 트위터, 인스타그램, 페이스북과 같은 소셜미디어 상에서 다양한 실구매자들의 반응을 살펴봅니다. 특히 보배드림, 디시, 펨코(에펨코리아) 같은 유명 자동차 커뮤니티에서 내돈내산 후기와 승차감, 연비 장단점에 대한 리얼 피드백을 모니터링하는 것이 하나의 필수 과정이 되었습니다. 나아가 카카오톡 오픈채팅이나 텔레그램 채널을 통해 직접 오프라인 성지 좌표 정보를 전송받아 영업사원의 비공식 혜택 및 추가 지원금이나 현금지원, 상품권 지급 여부를 확인하기 위해 전국 대리점 고객센터에 개별 문의를 남기기도 합니다. 최근에는 토스 같은 핀테크 앱이나 모바일 인터넷 온라인 어플리케이션 내의 모의 계산기 시스템을 활용하여 가솔린 2.5 스마트스트림이나 1.6 하이브리드 엔진 종류에 따른 상세 세금 차이를 간편하게 계산해 보고 다이렉트 컨설팅 상담 신청을 남기는 비율이 폭발적으로 늘어났습니다. 인공지능 기술의 고도화로 제미나이 또는 챗지피티(ChatGPT)와 같은 똑똑한 AI 솔루션을 통해 차종별 등급 비교 분석과 장기렌트 요금제 장단점을 실시간으로 학습하여 가장 유리한 계약 방식을 도출해 내는 영리한 소비자들도 대거 나타나고 있습니다.
+                </p>
+                <p>
+                    2026년도 최신 준대형 세단 시장 트렌드를 분석해 보면, 차량 자체의 고급화 전략에 발맞춰 가격 상승이 점진적으로 관측되고 있으며 그만큼 기본 적용되는 편의 및 지능형 안전 기능들의 등급이 한층 업그레이드되었습니다. 과거 7세대 그랜저 GN7 모델이 처음 등장했을 때 센세이션을 일으켰던 미래지향적 심리스 호라이즌 램프 디자인과 광활한 2열 공간의 장점은 연식 변경 모델로 이어지며 더욱 세련되게 다듬어졌습니다. 특히 신형 그랜저에서는 소프트웨어 기반 제어 시스템인 플레오스 커넥트 기술과 인텔리전트 인포테인먼트가 신규 통합되면서, 단순한 내연기관 차량을 넘어 고도의 커넥티드 스마트 모빌리티로 그 위상이 새롭게 정의되었습니다. 이에 따라 단순 차량의 가격만을 산출하는 것에 그치지 않고, 장기 렌트 요금제나 리스 상품에 제공되는 각종 할인 프로모션 혜택과 사은품, 사후 관리 측면까지 입체적으로 파악하는 지혜가 필수가 되었습니다.
+                </p>
+            </div>
+
+            <div class="links-container">
+                <h4>신뢰할 수 있는 외부 공식 추천 정보망</h4>
+                <ul>
+                    <li><a href="https://directtchecki.koreahankang.com" target="_blank" rel="noopener">준대형 세단 모의 견적 전문 신뢰 정보망</a></li>
+                    <li><a href="https://namu.wiki/w/%ED%98%84%EB%8C%80%20%EA%B7%B8%EB%9E%9C%EC%A0%80/7%EC%84%B8%EB%8C%80" target="_blank" rel="noopener">나무위키 그랜저 7세대 상세 백과사전</a></li>
+                    <li><a href="https://www.hyundai.com" target="_blank" rel="noopener">현대자동차 공식 브랜드 홈페이지</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="engine">
+            <h2>디올뉴 그랜저 엔진 종류별 주행 특징 및 가치 비교</h2>
+            <div class="card">
+                <p>
+                    디올뉴 그랜저의 엔진 종류 라인업은 주행 거리와 목적, 주행 환경에 따라 최적의 만족감을 제공할 수 있도록 크게 4가지 파워트레인 종류를 제안하고 있습니다. 각 라인업의 장단점과 연비 효율성, 유지 관리 요율을 세부적으로 이해하는 것이 잘못된 차량 인수로 인한 불필요한 비용 낭비를 최소화하는 지름길입니다.
+                </p>
+                
+                <h3>1. 스마트스트림 가솔린 2.5 엔진</h3>
+                <p>
+                    가장 보편적인 인기를 누리며 대중적인 추천 순위에서 제일 높은 순위를 점하는 디올뉴 그랜저 가솔린 2.5 사양은 준대형 세단에 요구되는 부드러운 일상 가속 능력과 높은 신뢰도를 보장합니다. 최고 출력 198마력을 자랑하는 이 엔진은 정교한 8단 자동변속기와 완벽한 하모니를 이루며 도심 및 장거리 고속 주행 시 운전자에게 쾌적함을 줍니다. 무엇보다 가솔린 2.5 엔진 종류를 장착한 트림은 다른 고성능 엔진이나 하이브리드 엔진 대비 최초 차량 구입 금액 자체가 가장 가성비 좋게 책정되어 있어 초기 예산 설정 부담이 제일 덜하다는 결정적인 매력을 지닙니다.
+                </p>
+
+                <h3>2. 스마트스트림 가솔린 3.5 엔진</h3>
+                <p>
+                    드라이빙의 역동성과 풍부한 출력을 가장 최우선으로 가치관을 두는 운전자라면 V형 6기통 구성을 갖춘 가솔린 3.5 모델이 정답입니다. 최고 출력 300마력의 거대한 엔진 회전 질감은 4기통 모델이 구현할 수 없는 특유의 매끄러움과 조용함을 지니며, 사륜구동 AWD 기능과의 조화도 가장 훌륭하여 어떤 기후 상황 속에서도 신뢰도 높은 그립 능력을 과시합니다. 다만 연간 자동차 세금이 고배기량 기준으로 다소 높게 계산되며 월 주유 금액 역시 상대적으로 다소 높다는 점이 아쉬운 단점으로 언급됩니다.
+                </p>
+
+                <h3>3. 1.6 터보 하이브리드 엔진</h3>
+                <p>
+                    현재 신차 계약 시장에서 가장 독보적인 가입 러시와 대기 시간을 형성하는 주인공은 단연 디올뉴 그랜저 하이브리드 엔진 사양입니다. 1.6리터 스마트스트림 터보 엔진에 강력한 구동 모터가 유기적으로 엮여 합산 출력 230마력의 산뜻한 발진 능력을 유도하며, 최신형 2세대 하이브리드 보조 제어 공학인 TEMD II 시스템이 기본화되면서 저속 선회 안정성이 더욱 정밀해졌습니다. 복합 연비 리터당 18.0킬로미터에 이르는 최강의 연비는 잦은 주유 주기를 획기적으로 연장하며 각종 환경 친화적 면세 할인 요금제 혜택을 다이렉트로 제공합니다.
+                </p>
+
+                <h3>4. LPi 3.5 LPG 엔진</h3>
+                <p>
+                    친환경 가솔린 대안 모델인 LPi 3.5 모델은 저렴한 원자재 가스 단가 혜택을 통해 장거리 상시 이동 차량에 최적화된 경제적인 이동 수단을 완성해 줍니다. 6기통 3.5리터 설계로 기존 원조 LPi 모델들이 겪던 답답한 가속 지연 단점을 시원하게 해결하여 실주행 스트레스가 전혀 없으며 조용한 엔진 구동력은 오너 드라이버들에게 매우 후한 평점을 얻습니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="trim">
+            <h2>디올뉴 그랜저 핵심 트림 라인업 상세 가이드</h2>
+            <div class="card">
+                <p>
+                    디올뉴 그랜저는 엔트리 트림인 프리미엄부터, 상위 편의 사양이 추가되는 익스클루시브, 2026년형 연식 변경과 함께 가성비 보강을 위해 야심 차게 다이렉트 신설된 스페셜 등급인 아너스, 최상위 럭셔리를 품은 캘리그래피, 그리고 캘리그래피의 가치를 계승하면서도 온전히 전용 블랙 컬러 테마로 카리스마를 발산하는 블랙잉크까지 총 5개 등급으로 나뉘어 시장에 판매되고 있습니다.
+                </p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>엔진 종류 및 트림 명칭</th>
+                                <th>공식 출시 가격 (원)</th>
+                                <th>기본 적용 핵심 특징 사양</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="highlight">가솔린 2.5 프리미엄 2WD</td>
+                                <td>37,980,000</td>
+                               <td>12.3인치 디스플레이 오디오, 전방 충돌방지 보조, 수평형 LED 램프</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">가솔린 2.5 익스클루시브 2WD</td>
+                                <td>42,870,000</td>
+                               <td>서라운드 뷰 모니터, 운전석 에르고 모션 시트, 후측방 모니터</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">가솔린 2.5 아너스 2WD</td>
+                                <td>45,130,000</td>
+                               <td>빌트인 캠 2, BOSE 사운드 시스템, 현대 스마트센스 II 기본 탑재</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">가솔린 2.5 캘리그래피 2WD</td>
+                                <td>47,100,000</td>
+                               <td>나파가죽 퀼팅 시트, 20인치 전용 알로이 휠, 순차점등 방향지시등</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight">가솔린 2.5 블랙잉크 2WD</td>
+                                <td>48,370,000</td>
+                               <td>내외장 올 블랙 전용 디자인 에디션, 다크 스포츠 알로이 휠</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-amber">1.6 하이브리드 프리미엄 2WD</td>
+                                <td>43,540,000</td>
+                               <td>하이브리드 전용 e-Motion 제어, 18인치 하이브리드 전용 휠</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-amber">1.6 하이브리드 익스클루시브 2WD</td>
+                                <td>48,430,000</td>
+                               <td>스마트 파워 테일게이트, 전동식 스티어링 휠, 뒷좌석 수동 커튼</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-amber">1.6 하이브리드 아너스 2WD</td>
+                                <td>50,690,000</td>
+                               <td>H-Pick 사양 통합, 실시간 AR 내비게이션, 안전 주행 보조 패키지</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-amber">1.6 하이브리드 캘리그래피 2WD</td>
+                                <td>52,660,000</td>
+                               <td>헤드업 디스플레이 기본 장착, 스웨이드 목베개, 고급 실내 앰비언트</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-amber">1.6 하이브리드 블랙잉크 2WD</td>
+                                <td>53,930,000</td>
+                               <td>하이브리드 기반 블랙 전용 패키지, 20인치 매트 블랙 전용 스펙</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    표에 명시된 기본 출시 가격은 개별소비세 기준 요율을 고르게 반영한 공시 금액대입니다. 사륜구동 주행을 선호하여 프리미엄 AWD 혹은 익스클루시브 AWD 및 캘리그래피 AWD 등 사륜 주행 시스템을 신규 가입 형태로 추가하고자 할 경우에는 등급을 막론하고 대략 220만 원 가량의 시스템 탑재 요금이 일률적으로 추가 계산됩니다. 추가적으로 고성능 V6 파워를 원하는 오너를 위한 가솔린 3.5 모델 선택 시에는 2.5 가솔린 사양 대비 평단 250만 원대의 세그먼트 가격 차이점이 존재하여 예비 구매자들의 세심한 계산기 연산과 고민을 깊어지게 만듭니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="calculator">
+            <h2>실시간 디올뉴 그랜저 모의 견적 및 월 납입금 계산기</h2>
+            <div class="calculator-container">
+                <p>
+                    구입을 희망하시는 디올뉴 그랜저 엔진 종류와 최선호 트림 등급을 직접 고르시고 인도조건을 편하게 지정해 보세요. 장기렌트 요금제 또는 다이렉트 할부 이용 시 요구되는 대략적인 예상 인수 비용 및 월별 납입 예상 금액을 직관적으로 연산하여 화면에 보여줍니다.
+                </p>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="engine-select">선호 엔진 라인업 종류 선택</label>
+                        <select id="engine-select" onchange="calculatePremium()">
+                            <option value="gasoline-25">스마트스트림 가솔린 2.5</option>
+                            <option value="gasoline-35">스마트스트림 가솔린 3.5</option>
+                            <option value="hybrid-16">가솔린 1.6 터보 하이브리드</option>
+                            <option value="lpg-35">LPi 3.5 가스 하이브리드 대안</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="trim-select">세부 트림 등급 지정</label>
+                        <select id="trim-select" onchange="calculatePremium()">
+                            <option value="premium">프리미엄 (가성비 중심 엔트리)</option>
+                            <option value="exclusive">익스클루시브 (최다선택 편의강화)</option>
+                            <option value="honors">아너스 (2026 연식변경 핵심 추가)</option>
+                            <option value="calligraphy">캘리그래피 (럭셔리 플래그십 표준)</option>
+                            <option value="blackink">블랙잉크 (독보적 카리스마 에디션)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-select">초기 인도금 설정 (선수율)</label>
+                        <select id="payment-select" onchange="calculatePremium()">
+                            <option value="0">선수율 0퍼센트 (초기비용 완전 무보증)</option>
+                            <option value="0.1">선수율 10퍼센트 (소액 납부 형태)</option>
+                            <option value="0.2">선수율 20퍼센트 (균형 잡힌 비중)</option>
+                            <option value="0.3">선수율 30퍼센트 (월 납입 부담 최소화)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="term-select">약정 계약 기간 (할부 혹은 렌트 리스 기간)</label>
+                        <select id="term-select" onchange="calculatePremium()">
+                            <option value="36">36개월 약정 (빠른 차량 반납 및 인수)</option>
+                            <option value="48">48개월 약정 (합리적 유지 기간 표준)</option>
+                            <option value="60">60개월 약정 (월 납부 요금 극소화 세팅)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="calc-result" style="margin-top: 30px;">
+                    <div class="result-item">
+                        <span>선택 모델 기준 기본 가격 :</span>
+                        <strong id="calc-base-price" class="highlight">37,980,000 원</strong>
+                    </div>
+                    <div class="result-item">
+                        <span>초기 선수금 제외 예상 잔존 대출 원금 :</span>
+                        <strong id="calc-loan-amount" class="highlight">37,980,000 원</strong>
+                    </div>
+                    <div class="result-item total">
+                        <span>예상 월 납입금 (금리 연 5.5퍼센트 대입 산출) :</span>
+                        <span id="calc-monthly-pay">1,146,300 원</span>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn-calc" onclick="calculatePremium()">실시간 모의 견적 정보 갱신하기</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="options">
+            <h2>현대 디올뉴 그랜저 필수 및 인기 선택 옵션 혜택 가이드</h2>
+            <div class="card">
+                <p>
+                    신규 그랜저 가입 과정에서 어떤 옵션 패키지를 더하고 뺄 것인지는 최종 청구서 금액에 가장 지대한 영향을 줍니다. 예산을 절약하면서도 운전 품질을 최대로 올릴 수 있는 인기 패키지들의 구성 요소들을 세밀히 분석해 드립니다.
+                </p>
+
+                <h3>1. 지능형 안전 기술: 현대 스마트센스</h3>
+                <p>
+                    현대 스마트센스는 충돌 방지 보조 영역을 정면을 넘어 교차로 대향차, 측방 다가오는 장애물까지 넓혀주며 정밀 센서를 적용한 스마트 크루즈 능력을 고도화합니다. 고속도로 장거리 출퇴근이 잦은 비즈니스맨들에게 가장 높은 순위로 추천되는 안전 혜택 종류입니다.
+                </p>
+
+                <h3>2. 감성 디자인 사양: 파노라마 선루프</h3>
+                <p>
+                    루프 스킨의 단정한 검은색 일체감과 함께 광활한 태양광 채광 및 쾌적한 실내 환기 혜택을 주는 대표적 하이엔드 사양입니다. 중고 매매 시 잔존 차량 금액 방어율과 선호 순위가 높다는 장점이 있는 반면, 루프 무게 증가로 인한 연비 미세 감소와 고속 주행 소음 유입 가능성 등의 소소한 단점이 수반됩니다.
+                </p>
+
+                <h3>3. 정밀 녹화 안전장치: 빌트인 캠 2</h3>
+                <p>
+                    외부 사제 블랙박스 장착 시 생겨날 수 있는 차체 전장 배선 훼손 걱정을 완벽하게 거두는 신개념 순정 고화질 녹화 장치입니다. 오디오 음성 정밀 동시 녹음과 함께 실시간 차량 내부 무선 카카오톡 연동 영상 내보내기 혜택을 지원하는 장점 덕에 인기가 무척 뜨겁습니다.
+                </p>
+
+                <h3>4. 첨단 주행 보조: 헤드업 디스플레이</h3>
+                <p>
+                    전방 시선을 조금도 다른 곳으로 이동시키지 않고 오롯이 안전 전면 유리창 화면을 통해 주행 정보 및 내비게이션 진로 방향 좌표를 실시간 전송받는 사양입니다. 야간 주행이나 복잡한 교차로 램프 구간 진출 시 운전의 안전 신뢰도를 비약적으로 상승시키는 완벽한 주행 도구입니다.
+                </p>
+
+                <h3>5. 안락함의 끝판왕: 2열 컴포트 패키지</h3>
+                <p>
+                    뒷좌석 승객을 위한 최고급 리클라이닝 안락 좌석 기능과 전동 스크린 전용 커튼 장치, 그리고 좌우 독립적인 헤드레스트 목베개가 조합된 팩입니다. 패밀리카 목적의 구매는 물론 오피셜 비즈니스 의전 세단 용도로 구상하시는 고객들의 가입 필수 사양입니다.
+                </p>
+
+                <h3>6. 18인치, 19인치, 20인치 알로이 휠 크기별 차이점</h3>
+                <p>
+                    휠의 인치 수 결정은 준대형 세단의 연비 효율과 주행 정숙성 및 디자인의 완성도와 매끄럽게 연결됩니다.
+                </p>
+                <ul>
+                    <li>18인치 알로이 휠: 사이드월 타이어 두께가 풍부하여 거친 노면 감쇠력이 제일 우수하고 주행 승차감이 매우 나긋나긋하며 유류 비용 절감 효율이 최고 수준입니다.</li>
+                    <li>19인치 알로이 휠: 스타일리시한 드레스업 효과와 승차감 사이에서 최적의 중간 타협점을 획득한 하이브리드 휠 규격입니다.</li>
+                    <li>20인치 알로이 휠 및 블랙잉크 전용 휠: 외장 디자인의 균형과 고급감을 극상으로 연출해 주는 최고 등급 스펙이지만, 타이어 폭 확대로 노면 충격 유입이 약간 증가하고 연비가 미세하게 하락할 수 있습니다.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>자주 묻는 질문 FAQ: 디올뉴 그랜저 가격 및 선택 요령</h2>
+            <div class="card">
+                <div class="faq-item">
+                    <div class="faq-question">Q1. 디올뉴 그랜저 장기렌트 이용 시 다이렉트 할부 가입 방식과의 장단점 차이는 무엇인가요?</div>
+                    <div class="faq-answer">
+                        A1. 장기렌트 요금제 종류는 월 사용료 안에 취득세, 정기 자동차세 및 개인 종합 자동차 보험료가 완전 포함되어 있어 자산 관리 관점에서 일시적인 금융 지출 리스크가 없습니다. 반면 할부 가입 방식은 차주 명의로 차량 등록이 되며 본인의 자동차 보험 무사고 경력이 장기적으로 지속해서 누적된다는 고유의 장점이 있습니다. 두 방법 모두 온라인 상담 신청 및 전문 업체의 상세 비교 컨설팅 조언을 받아보시는 것이 제일 적절한 결론을 도출하는 꿀팁입니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q2. 최신 2026년형 연식 변경에서 아너스 트림을 신규로 만든 이유는 무엇인가요?</div>
+                    <div class="faq-answer">
+                        A2. 기존 익스클루시브 트림에서 소비자들이 다이렉트로 제일 많이 조합하여 선택하던 핵심 사양(현대 스마트센스, 보스 프리미엄 사운드 시스템, 빌트인 캠 2 등)을 일체형 묶음 기본 품목으로 대폭 고도화하여 단일 선택 시의 누적 추가 비용 부담을 대폭 완화하려는 현대자동차의 전략적인 조치입니다. 가성비와 가치를 모두 손에 쥐길 희망하는 영리한 유저들에게 현재 매우 뜨거운 관심을 받고 있습니다.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Q3. 보배드림이나 펨코 등 커뮤니티에서 지적하는 디올뉴 그랜저 가격 최고 단점은 무엇인가요?</div>
+                    <div class="faq-answer">
+                        A3. 캘리그래피 및 블랙잉크 트림에 다양한 편의 패키지를 빠짐없이 풀옵션 적용할 경우, 최종 세금 포함 실구매 산출 금액이 6000만 원 중반 영역에 도달한다는 가격 저항선이 주로 꼽힙니다. 이 수준의 비용 금액대는 상위 럭셔리 브랜드의 세단이나 우수한 독일 프리미엄 중형 모델 신차 최저가 할인 정보와 가격 범위가 겹치게 되므로, 소비자로서는 선택에 있어 고뇌를 겪게 되는 현실적인 장단점이 있습니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="consult">
+            <h2>디올뉴 그랜저 1:1 신차 비교견적 컨설팅 상담 신청</h2>
+            <div class="inquire-container">
+                <p style="margin-top: 0; color: var(--accent-indigo); font-weight: 700; font-size: 1.15em;">
+                    전국 대리점의 최신 즉시출고 가능 물량 리스트와 영업 사원의 사은품 혜택, 추가 지원금 정보 및 맞춤형 견적을 다이렉트로 제안해 드립니다.
+                </p>
+                <form class="inquire-form" action="javascript:alert('상담 신청이 완료되었습니다. 전문 컨설턴트가 빠르게 연락을 드리겠습니다.');">
+                    <div class="form-group">
+                        <label for="user-name">신청자 성함</label>
+                        <input type="text" id="user-name" placeholder="홍길동" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-phone">휴대폰 연락처 (하이픈 없이 입력)</label>
+                        <input type="tel" id="user-phone" placeholder="01012345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="select-engine-wish">구매 희망 엔진 종류</label>
+                        <select id="select-engine-wish">
+                            <option value="25g">스마트스트림 가솔린 2.5</option>
+                            <option value="35g">스마트스트림 가솔린 3.5</option>
+                            <option value="hevt">1.6 터보 하이브리드 (최고인기)</option>
+                            <option value="lp">LPi 3.5 LPG 경제 모델</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="select-purchase-method">선호 구매 프로그램 종류</label>
+                        <select id="select-purchase-method">
+                            <option value="lease">저금리 신차 리스 요금제</option>
+                            <option value="rent">다이렉트 장기렌트 특가 패키지</option>
+                            <option value="loan">은행 연동 우대금리 전액할부</option>
+                            <option value="cash">일시불 결제 및 오토캐시백 혜택</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="user-memo">상담 희망 구체적 내용 (추가 할인 조건 및 사은품 사양 정보 문의)</label>
+                        <textarea id="user-memo" rows="4" placeholder="예 : 가솔린 2.5 아너스 트림의 예상 납기 일정과 추가적인 할인 프로모션 혜택 좌표가 궁금합니다."></textarea>
+                    </div>
+                    <div class="form-group full-width" style="margin-top: 10px;">
+                        <button type="submit" class="btn-submit">실시간 최저가 전문 무료 상담 신청하기</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
     </main>
-  </body>
-</html>
+
+  
+
+    <script>
+        function calculatePremium() {
+            var engine = document.getElementById("engine-select").value;
+            var trim = document.getElementById("trim-select").value;
+            var payment = parseFloat(document.getElementById("payment-select").value);
+            var term = parseInt(document.getElementById("term-select").value);
+            
+            // Base prices based on 2026/2027 model year data
+            var basePrice = 37980000;
+            
+            if (engine === "gasoline-25") {
+                if (trim === "premium") basePrice = 37980000;
+                else if (trim === "exclusive") basePrice = 42870000;
+                else if (trim === "honors") basePrice = 45130000;
+                else if (trim === "calligraphy") basePrice = 47100000;
+                else if (trim === "blackink") basePrice = 48370000;
+            } else if (engine === "gasoline-35") {
+                if (trim === "premium") basePrice = 40450000;
+                else if (trim === "exclusive") basePrice = 45340000;
+                else if (trim === "honors") basePrice = 47600000;
+                else if (trim === "calligraphy") basePrice = 49570000;
+                else if (trim === "blackink") basePrice = 50840000;
+            } else if (engine === "hybrid-16") {
+                if (trim === "premium") basePrice = 43540000;
+                else if (trim === "exclusive") basePrice = 48430000;
+                else if (trim === "honors") basePrice = 50690000;
+                else if (trim === "calligraphy") basePrice = 52660000;
+                else if (trim === "blackink") basePrice = 53930000;
+            } else if (engine === "lpg-35") {
+                if (trim === "premium") basePrice = 38650000;
+                else if (trim === "exclusive") basePrice = 43480000;
+                else if (trim === "honors") basePrice = 45700000;
+                else if (trim === "calligraphy") basePrice = 47800000;
+                else if (trim === "blackink") basePrice = 49000000;
+            }
+            
+            var loanAmount = basePrice * (1 - payment);
+            
+            // Standard simple annual interest rate (e.g., 5.5% per annum)
+            var annualRate = 0.055;
+            var monthlyRate = annualRate / 12;
+            var monthlyInstallment = 0;
+            
+            if (loanAmount > 0) {
+                monthlyInstallment = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, term)) / (Math.pow(1 + monthlyRate, term) - 1);
+            }
+            
+            document.getElementById("calc-base-price").innerText = basePrice.toLocaleString() + " 원";
+            document.getElementById("calc-loan-amount").innerText = Math.round(loanAmount).toLocaleString() + " 원";
+            document.getElementById("calc-monthly-pay").innerText = Math.round(monthlyInstallment).toLocaleString() + " 원";
+        }
+
+        // Initialize calculator with standard settings on load
+        window.onload = function() {
+            calculatePremium();
+        };
+    </script>
+  
